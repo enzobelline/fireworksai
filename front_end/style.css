@@ -1,0 +1,101 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+header h1 {
+    font-size: 2rem;
+    color: #555;
+}
+
+.controls {
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.controls label {
+    font-size: 1rem;
+}
+
+.content {
+    display: flex;
+    gap: 20px;
+}
+
+.viewer {
+    flex: 1;
+    text-align: center;
+}
+
+.viewer img {
+    max-width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #f4f4f9;
+}
+
+.viewer img[alt="No image selected"] {
+    display: none; /* Hide the broken image icon when no image is selected */
+}
+
+.placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 300px;
+    background-color: #f4f4f9;
+    border: 1px dashed #ccc;
+    border-radius: 8px;
+    font-size: 1.2rem;
+    color: #888;
+}
+
+.json-view {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+pre {
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 8px;
+    max-height: 400px;
+    overflow-y: auto;
+    color: #333;
+}
+
+pre .mismatch {
+    color: red;
+    font-weight: bold;
+}
+
+.placeholder {
+    width: 100%;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #888;
+    border: 1px dashed #ccc;
+    font-size: 1.2rem;
+}

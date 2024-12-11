@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Viewer and Validator</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>JSON Viewer and Validator</h1>
+        </header>
+        <main>
+            <section class="controls">
+                <label for="image-select">Choose an image:</label>
+                <select id="image-select"></select>
+            </section>
+            <section class="content">
+                <div class="viewer">
+                    <img id="selected-image" alt="No image selected" src="">
+                    <div class="placeholder">No image selected</div>
+                </div>                
+                <div class="json-view">
+                    <h2>Extracted JSON</h2>
+                    <pre id="extracted-json">No JSON data available. Please select an image.</pre>
+                    <h2>Correct JSON</h2>
+                    <pre id="correct-json">No JSON data available. Please select an image.</pre>
+                </div>
+            </section>
+        </main>
+        <footer>
+            <p>&copy; 2024 JSON Viewer</p>
+        </footer>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>

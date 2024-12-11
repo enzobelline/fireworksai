@@ -148,13 +148,12 @@ def load_list_from_json(json_path):
     """
     try:
         with open(json_path, 'r') as json_file:
-            file_list = json.load(json_file)
+            output = json.load(json_file)
         print(f"File list loaded from {json_path}")
-        return file_list
+        return output
     except Exception as e:
         print(f"Error loading JSON file: {e}")
         return []
-
 
 #-------------------------
 #--Image Functions--------
@@ -427,9 +426,7 @@ def run_all_images_chat_completions_api_VLM_json_output(image_file_paths):
         if not valid_response:
             print(f"Warning: Could not get a valid response for {image_filepath} after {MAX_RETRIES} attempts.")
             responses.append({"error": "Maximum retries reached", "image_path": image_filepath})
-
-        # Save responses to a JSON file
-        save_list_to_json(responses, "responses.json")
+    return responses
 
 
 
@@ -442,3 +439,48 @@ def completions_api_VLM(client):
     )
     print(response.choices[0].text)
 
+#----------------------------------
+#--Preprocessing Functions---------
+#----------------------------------
+
+def clean_responses(raw_responses):
+    """
+    Cleans a list of raw responses containing escaped JSON strings.
+
+    Args:
+        raw_responses (list): List of raw response strings.
+
+    Returns:
+        list: List of cleaned and properly formatted JSON objects.
+    """
+    cleaned_responses = []
+
+    for idx, raw in enumerate(raw_responses):
+        try:
+            # Step 1: Remove leading/trailing single quotes
+            cleaned = raw.strip("'").strip()
+
+            # Step 2: Replace invalid escape sequences
+            cleaned = cleaned.replace("\\\\", "\\")  # Double backslashes to single
+            cleaned = cleaned.replace("\\n", "")    # Remove escaped newlines
+            cleaned = cleaned.replace("\\'", "'")   # Fix improperly escaped single quotes
+
+            # Step 3: Attempt to decode JSON string
+            try:
+                json_obj = json.loads(cleaned)
+            except json.JSONDecodeError as e:
+                # If decoding fails, try a secondary fix
+                print(f"Initial decoding failed for response {idx + 1}: {e}")
+                print(f"Attempting secondary fixes...")
+                
+                # Remove extra backslashes
+                cleaned = cleaned.replace("\\", "")
+                json_obj = json.loads(cleaned)
+
+            # Add cleaned JSON object to the list
+            cleaned_responses.append(json_obj)
+        except json.JSONDecodeError as e:
+            print(f"Error decoding JSON for response {idx + 1}: {e}")
+            continue
+
+    return cleaned_responses
