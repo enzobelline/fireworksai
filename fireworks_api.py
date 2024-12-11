@@ -1,4 +1,5 @@
 from fireworks.client import Fireworks
+from fireworks.client.image import ImageInference, Answer
 import fireworks.client
 import re
 import base64
@@ -9,7 +10,6 @@ from pathlib import Path
 import mimetypes
 import openai
 from pydantic import BaseModel, Field
-
 
 #-------------------------
 #--LOCAL VARAIBLES--------
@@ -317,34 +317,6 @@ def chat_completions_api_VLM(text=DEFAULT_PROMPT,image_path=DOG_IMAGE_PATH):
     )
     return(response.choices[0].message.content)
 
-def chat_completions_api_VLM_json_output(json_output_type, text=DEFAULT_PROMPT,image_path=DOG_IMAGE_PATH):
-    fireworks.client.api_key = os.getenv("FIREWORKS_API_KEY")
-
-    if validate_image_path(image_path)=="local_path":
-        image_path=create_base64_image_url(image_path)
-        
-    # Determine the schema based on the output type
-    schema = (
-        {"type": "json_object", "schema": LicenseResult.model_json_schema()}
-        if json_output_type == "license"
-        else {"type": "json_object", "schema": PassportResult.model_json_schema()}
-    )
-    # Construct and send the API request
-    response = fireworks.client.ChatCompletion.create(
-        model="accounts/fireworks/models/phi-3-vision-128k-instruct",
-        response_format=schema,
-        messages=[
-            {
-                "role": "user",
-                "content": [
-                    {"type": "text", "text": text},
-                    {"type": "image_url", "image_url": {"url": image_path}},
-                ],
-            }
-        ],
-    )
-    return repr(response.choices[0].message.content)
-           
 def run_all_images_chat_completions_api_VLM(image_file_paths):
     responses=[]
     n=len(image_file_paths)
@@ -385,7 +357,35 @@ def run_all_images_chat_completions_api_VLM(image_file_paths):
 
         # Save responses to a JSON file
         save_list_to_json(responses, "responses.json")
-       
+
+def chat_completions_api_VLM_json_outputphi(json_output_type, text=DEFAULT_PROMPT,image_path=DOG_IMAGE_PATH):
+    fireworks.client.api_key = os.getenv("FIREWORKS_API_KEY")
+
+    if validate_image_path(image_path)=="local_path":
+        image_path=create_base64_image_url(image_path)
+        
+    # Determine the schema based on the output type
+    schema = (
+        {"type": "json_object", "schema": LicenseResult.model_json_schema()}
+        if json_output_type == "license"
+        else {"type": "json_object", "schema": PassportResult.model_json_schema()}
+    )
+    # Construct and send the API request
+    response = fireworks.client.ChatCompletion.create(
+        model="accounts/fireworks/models/phi-3-vision-128k-instruct",
+        response_format=schema,
+        messages=[
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": text},
+                    {"type": "image_url", "image_url": {"url": image_path}},
+                ],
+            }
+        ],
+    )
+    return repr(response.choices[0].message.content)
+                  
 def run_all_images_chat_completions_api_VLM_json_output(image_file_paths):
     responses=[]
     n=len(image_file_paths)
@@ -408,7 +408,7 @@ def run_all_images_chat_completions_api_VLM_json_output(image_file_paths):
 
         while retry_count < MAX_RETRIES and not valid_response:
             # Get response from the API
-            response = chat_completions_api_VLM_json_output(
+            response = chat_completions_api_VLM_json_outputphi(
                 json_output_type=id_type,
                 text=prompt,
                 image_path=image_filepath
@@ -428,14 +428,34 @@ def run_all_images_chat_completions_api_VLM_json_output(image_file_paths):
             responses.append({"error": "Maximum retries reached", "image_path": image_filepath})
     return responses
 
+def chat_completions_api_VLM(text=DEFAULT_PROMPT,image_path=DOG_IMAGE_PATH):
+    if validate_image_path(image_path)=="local_path":
+        image_path=create_base64_image_url(image_path)
 
+    fireworks.client.api_key = os.getenv("FIREWORKS_API_KEY")
+    response = fireworks.client.ChatCompletion.create(
+    model = "accounts/fireworks/models/phi-3-vision-128k-instruct",
+    messages = [{
+        "role": "user",
+        "content": [{
+        "type": "text",
+        "text": text,
+        }, {
+        "type": "image_url",
+        "image_url": {
+            "url": image_path
+        },
+        }, ],
+    }],
+    )
+    return(response.choices[0].message.content)
 
-def completions_api_VLM(client):
+def completions_api_VLM():
     fireworks.client.api_key = os.getenv("FIREWORKS_API_KEY")
     response = fireworks.client.Completion.create(
-    model = "accounts/fireworks/models/phi-3-vision-128k-instruct",
-    prompt = "SYSTEM: Hello\n\nUSER:<image>\ntell me about the image\n\nASSISTANT:",
-    images = ["https://images.unsplash.com/photo-1582538885592-e70a5d7ab3d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"],
+        model = "accounts/fireworks/models/phi-3-vision-128k-instruct",
+        prompt = "SYSTEM: Hello\n\nUSER:<image>\ntell me about the image\n\nASSISTANT:",
+        images = ["https://images.unsplash.com/photo-1582538885592-e70a5d7ab3d3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1770&q=80"],
     )
     print(response.choices[0].text)
 

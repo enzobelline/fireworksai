@@ -1,5 +1,5 @@
-[
-    {
+{
+    "sample_inputs/License-1.png": {
         "DL": "I1234568",
         "EXP": "08/31/2014",
         "LN": "CARDHOLDER",
@@ -17,7 +17,7 @@
         "DD": "00/00/0000NNAN/ANFD/YY",
         "ISS": "08/31/2009"
     },
-    {
+    "sample_inputs/License-2.jpg": {
         "DL": "99 999 999",
         "EXP": "01/08/2026",
         "LN": "Sample",
@@ -35,7 +35,7 @@
         "DD": "1234567890123456789012345",
         "ISS": "01/07/2022"
     },
-    {
+    "sample_inputs/License-3.jpeg": {
         "DL": "000123456789",
         "EXP": "05/28/2029",
         "LN": "Public",
@@ -53,7 +53,7 @@
         "DD": "12345689",
         "ISS": "05/28/2024"
     },
-    {
+    "sample_inputs/passport-1.jpeg": {
         "passport_number": "963545637",
         "surname": "JOHN",
         "given_name": "DOE",
@@ -65,7 +65,7 @@
         "date_of_expiry": "14 Apr 2027",
         "issuing_country": "United States"
     },
-    {
+    "sample_inputs/passport-2.jpg": {
         "passport_number": "575034801",
         "surname": "Franklin",
         "given_name": "Benjamin",
@@ -77,7 +77,7 @@
         "date_of_expiry": "15 Jan 2028",
         "issuing_country": "United States"
     },
-    {
+    "sample_inputs/passport-3.png": {
         "passport_number": "203340000",
         "surname": "HARMS",
         "given_name": "ROSA",
@@ -89,4 +89,4 @@
         "date_of_expiry": "06 MAY 2028",
         "issuing_country": "UNITED STATES OF AMERICA"
     }
-]
+}
