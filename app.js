@@ -36,75 +36,52 @@ document.addEventListener("DOMContentLoaded", async () => {
             imageSelect.appendChild(option);
         });
     }
-// Highlight differences for extracted JSON and correct JSON
-function highlightDifferences(extracted, correct) {
-    const extractedDiffHtml = [];
-    const correctDiffHtml = [];
 
-    // Iterate over all keys in the correct JSON
-    for (const key in correct) {
-        if (extracted[key] !== correct[key]) {
-            // If the values are different, show red for extracted and green for correct
-            extractedDiffHtml.push(
-                `<span class="mismatch">${key}: ${extracted[key] || "N/A"}</span>`
-            );
-            correctDiffHtml.push(
-                `<span class="correct">${key}: ${correct[key]}</span>`
-            );
-        } else {
-            // If values match, show normally
-            extractedDiffHtml.push(`${key}: ${extracted[key]}`);
-            correctDiffHtml.push(`${key}: ${correct[key]}`);
+    // Highlight differences in JSON
+    function highlightDifferences(extracted, correct) {
+        const diffHtml = [];
+        for (const key in correct) {
+            if (extracted[key] !== correct[key]) {
+                diffHtml.push(`<span class="mismatch">${key}: ${correct[key]}</span>`);
+            } else {
+                diffHtml.push(`${key}: ${correct[key]}`);
+            }
         }
+        return diffHtml.join("<br>");
     }
 
-    // Handle any extra keys in extracted JSON not present in correct JSON
-    for (const key in extracted) {
-        if (!(key in correct)) {
-            extractedDiffHtml.push(
-                `<span class="mismatch">${key}: ${extracted[key]}</span>`
-            );
+    // Handle dropdown change
+    imageSelect.addEventListener("change", (e) => {
+        const selectedImagePath = e.target.value; // Full path from dropdown
+        const placeholder = document.querySelector(".placeholder");
+
+        if (!selectedImagePath) {
+            selectedImage.src = "";
+            selectedImage.alt = "No image selected";
+            selectedImage.style.display = "none"; // Hide the image element
+            placeholder.style.display = "flex";  // Show the placeholder
+
+            extractedJsonPre.textContent = "No JSON data available. Please select an image.";
+            correctJsonPre.textContent = "No JSON data available. Please select an image.";
+            return;
         }
-    }
 
-    return {
-        extractedHtml: extractedDiffHtml.join("<br>"),
-        correctHtml: correctDiffHtml.join("<br>")
-    };
-}
+        // Hide the placeholder and show the selected image
+        selectedImage.src = selectedImagePath;
+        selectedImage.alt = selectedImagePath;
+        selectedImage.style.display = "block"; // Show the image element
+        placeholder.style.display = "none";   // Hide the placeholder
 
-// Handle dropdown change
-imageSelect.addEventListener("change", (e) => {
-    const selectedImagePath = e.target.value; // Full path from dropdown
-    const placeholder = document.querySelector(".placeholder");
+        // Match the extracted JSON using the selected image path
+        const extractedInfo = responses[imageList.indexOf(selectedImagePath)] || {};
+        const correctInfoForImage = correctInfo[selectedImagePath] || {}; // Ensure matching logic
 
-    if (!selectedImagePath) {
-        selectedImage.src = "";
-        selectedImage.alt = "No image selected";
-        selectedImage.style.display = "none"; // Hide the image element
-        placeholder.style.display = "flex";  // Show the placeholder
-
-        extractedJsonPre.innerHTML = "No JSON data available. Please select an image.";
-        correctJsonPre.innerHTML = "No JSON data available. Please select an image.";
-        return;
-    }
-
-    // Hide the placeholder and show the selected image
-    selectedImage.src = selectedImagePath;
-    selectedImage.alt = selectedImagePath;
-    selectedImage.style.display = "block"; // Show the image element
-    placeholder.style.display = "none";   // Hide the placeholder
-
-    // Match the extracted JSON using the selected image path
-    const extractedInfo = responses[imageList.indexOf(selectedImagePath)] || {};
-    const correctInfoForImage = correctInfo[selectedImagePath] || {}; // Ensure matching logic
-
-    // Highlight differences
-    const { extractedHtml, correctHtml } = highlightDifferences(extractedInfo, correctInfoForImage);
-
-    // Display highlighted JSON
-    extractedJsonPre.innerHTML = extractedHtml || "No extracted JSON available.";
-    correctJsonPre.innerHTML = correct
+        // Display extracted JSON and highlight differences
+        extractedJsonPre.textContent = JSON.stringify(extractedInfo, null, 4);
+        correctJsonPre.innerHTML = Object.keys(correctInfoForImage).length
+            ? highlightDifferences(extractedInfo, correctInfoForImage)
+            : "No correct JSON data available for this image.";
+    });
 
     // Initialize app
     async function init() {

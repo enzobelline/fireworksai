@@ -246,6 +246,7 @@ def validate_image_path(input_path):
 #--API Classes and Functions -------
 #-----------------------------------
 
+#json output format for license
 class LicenseResult(BaseModel):
     DL: str       # Driver's License Number
     EXP: str      # Expiration Date (MM-DD-YYYY)
@@ -263,6 +264,8 @@ class LicenseResult(BaseModel):
     WGT: str      # Weight (e.g., 150 lbs)
     DD: str       # Document Discriminator
     ISS: str      # Issue Date (MM-DD-YYYY)
+
+#json output format for passport
 class PassportResult(BaseModel):
     passport_number: str  # Passport Number
     surname: str          # Surname 
@@ -295,6 +298,7 @@ def test():
     print("Response from Fireworks API:")
     print(response.choices[0].message.content)
 
+#api interface for image->text
 def chat_completions_api_VLM(text=DEFAULT_PROMPT,image_path=DOG_IMAGE_PATH):
     if validate_image_path(image_path)=="local_path":
         image_path=create_base64_image_url(image_path)
@@ -317,6 +321,7 @@ def chat_completions_api_VLM(text=DEFAULT_PROMPT,image_path=DOG_IMAGE_PATH):
     )
     return(response.choices[0].message.content)
 
+#run api interface for image->text for all images
 def run_all_images_chat_completions_api_VLM(image_file_paths):
     responses=[]
     n=len(image_file_paths)
@@ -358,6 +363,8 @@ def run_all_images_chat_completions_api_VLM(image_file_paths):
         # Save responses to a JSON file
         save_list_to_json(responses, "responses.json")
 
+
+#run api interface for image->json
 def chat_completions_api_VLM_json_outputphi(json_output_type, text=DEFAULT_PROMPT,image_path=DOG_IMAGE_PATH):
     fireworks.client.api_key = os.getenv("FIREWORKS_API_KEY")
 
@@ -385,7 +392,8 @@ def chat_completions_api_VLM_json_outputphi(json_output_type, text=DEFAULT_PROMP
         ],
     )
     return repr(response.choices[0].message.content)
-                  
+
+#run api interface for image->json for all images      
 def run_all_images_chat_completions_api_VLM_json_output(image_file_paths):
     responses=[]
     n=len(image_file_paths)

@@ -67,13 +67,11 @@ header h1 {
     color: #888;
 }
 
-.json-view pre {
-    padding: 10px;
-    background-color: #f9f9f9;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    overflow-y: auto;
-    max-height: 400px;
+.json-view {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 pre {
@@ -85,15 +83,9 @@ pre {
     overflow-y: auto;
     color: #333;
 }
-/* For mismatched parts of extracted JSON */
-.mismatch {
-    color: red;
-    font-weight: bold;
-}
 
-/* For correct parts of correct JSON */
-.correct {
-    color: green;
+pre .mismatch {
+    color: red;
     font-weight: bold;
 }
 
