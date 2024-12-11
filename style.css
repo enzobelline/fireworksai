@@ -85,7 +85,7 @@ pre {
 }
 
 pre .mismatch {
-    color: red;
+    color: green;
     font-weight: bold;
 }
 
