@@ -4,7 +4,6 @@ A web-based application to view and validate JSON data extracted from images (e.
 
 ---
 
-    - [Passports \& Drivers License Identity Verification](#passports--drivers-license-identity-verification)
 - [Passports \& Drivers License Identity Verification](#passports--drivers-license-identity-verification)
   - [Features](#features)
   - [Demo](#demo)
