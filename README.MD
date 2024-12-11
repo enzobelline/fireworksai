@@ -50,17 +50,8 @@ Check out the live version on [GitHub Pages](https://github.com/enzobelline/fire
 
 ---
 
-fireworksai/
-├── app.js                    # JavaScript logic for the application
-├── style.css                 # Styling for the application
-├── index.html                # Main HTML file
-├── sample_inputs/            # Folder containing the images
-│   ├── License-1.png
-│   ├── License-2.jpg
-│   ├── ...
-│   ├── Passport-3.jpeg
-├── cleaned_responses.json   # Extracted JSON data
-├── correct_information.json # Correct JSON for comparison
-├── image_list.json          # List of images in order
-├── requirements.txt         # Python dependencies
-└── README.md                # Project documentation
+For the project, I initially started working with the phi-3-vision model, testing output text format first before transitioning to JSON output format. The JSON output proved more consistent and structured, making it easier to parse and extract the necessary data for the identity verification process.
+
+To ensure usability and efficiency, I developed a basic front-end interface. This interface allows users to select images and compare extracted JSON data with correct information side-by-side. I also incorporated visual indicators for discrepancies, which promotes ease of handling mismatches and verifying data.
+
+On the backend, I implemented pre-checks and exception handling mechanisms to validate inputs, such as ensuring the correctness of URLs and filenames for images. These measures help maintain data integrity and ensure smooth processing during API calls.
