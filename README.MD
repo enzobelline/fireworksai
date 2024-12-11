@@ -20,7 +20,7 @@ A web-based application to view and validate JSON data extracted from images (e.
 
 ## Demo
 
-Check out the live version on [GitHub Pages](https://github.com/enzobelline/fireworksai).
+Check out the live version on [GitHub Pages](https://enzobelline.github.io/fireworksai/).
 
 ---
 
