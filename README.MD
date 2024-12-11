@@ -13,7 +13,7 @@ A web-based application to view and validate JSON data extracted from images (e.
 ## Features
 - **Image Selection**: Choose images from a dropdown menu.
 - **JSON Display**: View extracted JSON and the correct JSON side-by-side.
-- **Highlight Differences**: Mismatched values between the extracted and correct JSON are displayed in red.
+- **Highlight Differences**: Mismatched values between the extracted and correct JSON are displayed in green on the correct json.
 - **Responsive Design**: Works across devices with clean and user-friendly visuals.
 
 ---
