@@ -28,7 +28,7 @@ Check out the live version on [GitHub Pages](https://enzobelline.github.io/firew
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-github-username/json-viewer-validator.git
+   git clone https://github.com/enzobelline/fireworksai.git
    cd json-viewer-validator
 2. Set up a local environment:
    ```bash
